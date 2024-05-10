@@ -130,6 +130,15 @@ public class GamePiece {
         return true;
     }
 
+    public boolean isSecondToBottomEmpty() {
+        for (int section : block[block.length - 2]) {
+            if (section != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public int getLowestRow(int c) {
         for (int r = block.length - 1; r >= 0; r--) {
             if (block[r][c] != 0) {

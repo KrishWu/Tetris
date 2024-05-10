@@ -1,7 +1,7 @@
 public class Game {
     public static final int startX = 4;
     public static final int startY = 0;
-    
+
     private int[][] board;
     private GamePiece currPiece;
     private GamePiece nextPiece;
@@ -34,17 +34,9 @@ public class Game {
     public void nextFrame() {
         // System.out.println(currPiece.isBottomEmpty());
         if (isAtBottom()) {
-            addPieceToBoard();
-            currPiece = new GamePiece(nextPiece.getType());
-            nextPiece = new GamePiece();
-            x = 4;
-            y = 0;  
+            nextPiece();
         } else if (!canGoDown()) {
-            addPieceToBoard();
-            currPiece = new GamePiece(nextPiece.getType());
-            nextPiece = new GamePiece();
-            x = 4;
-            y = 0;
+            nextPiece();
         } else {
             y++;
         }
@@ -65,7 +57,7 @@ public class Game {
                     if (x + c + 1 >= board[0].length) {
                         return;
                     }
-                    if (board[y + r][x + c + 1] != 0) {
+                    if (y + r >= 0 && board[y + r][x + c + 1] != 0) {
                         return;
                     }
                 }
@@ -81,7 +73,7 @@ public class Game {
                     if (x + c - 1 < 0) {
                         return;
                     }
-                    if (board[y + r][x + c - 1] != 0) {
+                    if (y + r >= 0 && board[y + r][x + c - 1] != 0) {
                         return;
                     }
                 }
@@ -91,9 +83,10 @@ public class Game {
     }
 
     public void drop() {
-        while (canGoDown() && !isAtBottom()) {
+        while (!isAtBottom() && canGoDown()) {
             y++;
         }
+        nextPiece();
     }
 
     public void addPieceToBoard() {
@@ -106,16 +99,31 @@ public class Game {
         }
     }
 
+    public void nextPiece() {
+        addPieceToBoard();
+        currPiece = new GamePiece(nextPiece.getType());
+        nextPiece = new GamePiece();
+        x = startX;
+        y = -currPiece.getHeight();
+    }
+
     public boolean isAtBottom() {
-        return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()) || (currPiece.isBottomEmpty() && y + currPiece.getHeight() > board.length);
+        return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()
+                && !currPiece.isSecondToBottomEmpty())
+                || (y + currPiece.getHeight() > board.length && currPiece.isBottomEmpty() && !currPiece.isSecondToBottomEmpty()
+                        )
+                || (y + currPiece.getHeight() - 1 > board.length && currPiece.isBottomEmpty() && currPiece.isSecondToBottomEmpty()
+                        );
     }
 
     public boolean canGoDown() {
         for (int c = 0; c < currPiece.getWidth(); c++) {
-            System.out.println(currPiece.getLowestRow(c));
+            // System.out.println(currPiece.getLowestRow(c));
             if (currPiece.getLowestRow(c) != -1) {
-                if (board[currPiece.getLowestRow(c) + y + 1][x + c] != 0) {
-                    return false;
+                if (currPiece.getLowestRow(c) + y + 1 >= 0) {
+                    if (board[currPiece.getLowestRow(c) + y + 1][x + c] != 0) {
+                        return false;
+                    }
                 }
             }
         }
@@ -126,7 +134,8 @@ public class Game {
         int[][] toReturn = new int[board.length][board[0].length];
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[r].length; c++) {
-                if (r >= y && r < y + currPiece.getHeight() && c >= x && c < x + currPiece.getWidth() && currPiece.getSection(r - y, c - x) != 0) {
+                if (r >= y && r < y + currPiece.getHeight() && c >= x && c < x + currPiece.getWidth()
+                        && currPiece.getSection(r - y, c - x) != 0) {
                     toReturn[r][c] = currPiece.getSection(r - y, c - x);
                 } else {
                     toReturn[r][c] = board[r][c];
