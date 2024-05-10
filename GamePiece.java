@@ -130,6 +130,15 @@ public class GamePiece {
         return true;
     }
 
+    public int getLowestRow(int c) {
+        for (int r = block.length - 1; r >= 0; r--) {
+            if (block[r][c] != 0) {
+                return r;
+            }
+        }
+        return -1;
+    }
+
     public int getHeight() {
         return block.length;
     }

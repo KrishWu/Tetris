@@ -1,4 +1,7 @@
 public class Game {
+    public static final int startX = 4;
+    public static final int startY = 0;
+    
     private int[][] board;
     private GamePiece currPiece;
     private GamePiece nextPiece;
@@ -11,8 +14,8 @@ public class Game {
         currPiece = new GamePiece();
         nextPiece = new GamePiece();
         score = 0;
-        x = 4;
-        y = 0;
+        x = startX;
+        y = startY;
     }
 
     public void restart() {
@@ -20,8 +23,8 @@ public class Game {
         currPiece = new GamePiece();
         nextPiece = new GamePiece();
         score = 0;
-        x = 4;
-        y = 0;
+        x = startX;
+        y = startY;
     }
 
     public void pause() {
@@ -30,18 +33,18 @@ public class Game {
 
     public void nextFrame() {
         // System.out.println(currPiece.isBottomEmpty());
-        if ((y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()) || (currPiece.isBottomEmpty() && y + currPiece.getHeight() > board.length)) {
-            for (int r = 0; r < currPiece.getHeight(); r++) {
-                for (int c = 0; c < currPiece.getWidth(); c++) {
-                    if (currPiece.getSection(r, c) != 0) {
-                        board[y + r][x + c] = currPiece.getSection(r, c);
-                    }
-                }
-            }
+        if (isAtBottom()) {
+            addPieceToBoard();
             currPiece = new GamePiece(nextPiece.getType());
             nextPiece = new GamePiece();
             x = 4;
             y = 0;  
+        } else if (!canGoDown()) {
+            addPieceToBoard();
+            currPiece = new GamePiece(nextPiece.getType());
+            nextPiece = new GamePiece();
+            x = 4;
+            y = 0;
         } else {
             y++;
         }
@@ -88,7 +91,35 @@ public class Game {
     }
 
     public void drop() {
+        while (canGoDown() && !isAtBottom()) {
+            y++;
+        }
+    }
 
+    public void addPieceToBoard() {
+        for (int r = 0; r < currPiece.getHeight(); r++) {
+            for (int c = 0; c < currPiece.getWidth(); c++) {
+                if (currPiece.getSection(r, c) != 0) {
+                    board[y + r][x + c] = currPiece.getSection(r, c);
+                }
+            }
+        }
+    }
+
+    public boolean isAtBottom() {
+        return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()) || (currPiece.isBottomEmpty() && y + currPiece.getHeight() > board.length);
+    }
+
+    public boolean canGoDown() {
+        for (int c = 0; c < currPiece.getWidth(); c++) {
+            System.out.println(currPiece.getLowestRow(c));
+            if (currPiece.getLowestRow(c) != -1) {
+                if (board[currPiece.getLowestRow(c) + y + 1][x + c] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public int[][] getBoard() {
@@ -103,5 +134,9 @@ public class Game {
             }
         }
         return toReturn;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
