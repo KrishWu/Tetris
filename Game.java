@@ -102,10 +102,35 @@ public class Game {
 
     public void nextPiece() {
         addPieceToBoard();
+        removeFullLines();
         currPiece = new GamePiece(nextPiece.getType());
         nextPiece = new GamePiece();
         x = startX;
         y = -currPiece.getHeight();
+    }
+
+    public void removeFullLines() {
+        int numLinesRemoved = 0;
+        for (int r = 0; r < board.length; r++) {
+            if (isLineFull(r)) {
+                removeLine(r);
+                numLinesRemoved++;
+            }
+        }
+        addPoints(numLinesRemoved);
+    }
+
+    public void removeLine(int r) {
+        for (int currR = r; currR >= 1; currR--) {
+            for (int c = 0; c < board[currR].length; c++) {
+                board[currR][c] = board[currR - 1][c];
+            }
+        }
+        board[0] = new int[board[0].length];
+    }
+
+    public void addPoints(int numLinesRemoved) {
+        score += numLinesRemoved * 100;
     }
 
     public boolean isAtBottom() {
@@ -126,6 +151,15 @@ public class Game {
                         return false;
                     }
                 }
+            }
+        }
+        return true;
+    }
+
+    public boolean isLineFull(int r) {
+        for (int c : board[r]) {
+            if (c == 0) {
+                return false;
             }
         }
         return true;
