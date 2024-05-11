@@ -41,7 +41,7 @@ public class GamePiece {
 
     public GamePiece() {
         // System.out.println(blocks.substring((int)(Math.random()*7)).substring(0,1));
-        this(blocks.substring((int)(Math.random()*7)).substring(0,1));
+        this(blocks.substring((int) (Math.random() * 7)).substring(0, 1));
     }
 
     public GamePiece(String piece) {
@@ -66,26 +66,26 @@ public class GamePiece {
 
     // Rotate matrix 90 degrees right
     public void rotateRight(int[][] board, int x, int y) {
-        //Create a new temp 2D array.
+        // Create a new temp 2D array.
         int[][] temp = new int[block.length][block[0].length];
-        //Check if rotation is possible and copy to new location in temp.
+        // Check if rotation is possible and copy to new location in temp.
         for (int r = 0; r < temp.length; r++) {
             for (int c = 0; c < temp[r].length; c++) {
-                if (block[block[0].length-c-1][r] != 0) {
-                    if (r+y >= board.length || c+x >= board[0].length) {
+                if (block[block[0].length - c - 1][r] != 0 && r + y >= 0) {
+                    if (r + y >= board.length || c + x >= board[0].length) {
                         return;
                     }
-                    if (r+y < 0 || c+x < 0) {
+                    if (r + y < 0 || c + x < 0) {
                         return;
                     }
-                    if (board[r+y][c+x] != 0) {
+                    if (board[r + y][c + x] != 0) {
                         return;
                     }
                 }
-                temp[r][c] = block[block[0].length-c-1][r];
+                temp[r][c] = block[block[0].length - c - 1][r];
             }
         }
-        //Copy temp back to the block.
+        // Copy temp back to the block.
         for (int r = 0; r < temp.length; r++) {
             for (int c = 0; c < temp[r].length; c++) {
                 block[r][c] = temp[r][c];
@@ -94,26 +94,26 @@ public class GamePiece {
     }
 
     public void rotateLeft(int[][] board, int x, int y) {
-        //Create a new temp 2D array.
+        // Create a new temp 2D array.
         int[][] temp = new int[block.length][block[0].length];
-        //Check if rotation is possible and copy to new location in temp.
+        // Check if rotation is possible and copy to new location in temp.
         for (int r = 0; r < temp.length; r++) {
             for (int c = 0; c < temp[r].length; c++) {
-                if (block[block[0].length-c-1][r] != 0) {
-                    if (r+y >= board.length || c+x >= board[0].length) {
+                if (block[block[0].length - c - 1][r] != 0 && r + y >= 0) {
+                    if (r + y >= board.length || c + x >= board[0].length) {
                         return;
                     }
-                    if (r+y < 0 || c+x < 0) {
+                    if (r + y < 0 || c + x < 0) {
                         return;
                     }
-                    if (board[r+y][c+x] != 0) {
+                    if (board[r + y][c + x] != 0) {
                         return;
                     }
                 }
-                temp[r][c] = block[c][block.length-r-1];
+                temp[r][c] = block[c][block.length - r - 1];
             }
         }
-        //Copy temp back to the block.
+        // Copy temp back to the block.
         for (int r = 0; r < temp.length; r++) {
             for (int c = 0; c < temp[r].length; c++) {
                 block[r][c] = temp[r][c];

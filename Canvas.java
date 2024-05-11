@@ -12,7 +12,6 @@ public class Canvas extends JComponent {
     private boolean gameOver;
     private int newTickTimer;
 
-
     public Canvas(int width, int height) {
         this.WIDTH = width;
         this.HEIGHT = height;
@@ -49,10 +48,10 @@ public class Canvas extends JComponent {
                 if (e.getKeyChar() == 'r') {
                     game.restart();
                     // for (int r = 0; r < 20; r++) {
-                    //     for (int c = 0; c < 10; c++) {
-                    //         System.out.print(game.getBoard()[r][c]);
-                    //     }
-                    //     System.out.println();
+                    // for (int c = 0; c < 10; c++) {
+                    // System.out.print(game.getBoard()[r][c]);
+                    // }
+                    // System.out.println();
                     // }
                 }
                 if (e.getKeyChar() == 'd') {

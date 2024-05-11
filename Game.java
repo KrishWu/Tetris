@@ -92,7 +92,8 @@ public class Game {
     public void addPieceToBoard() {
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
-                if (currPiece.getSection(r, c) != 0) {
+                if (currPiece.getSection(r, c) != 0 && r + y >= 0 && r + y < board.length && c + x >= 0
+                        && c + x < board[0].length) {
                     board[y + r][x + c] = currPiece.getSection(r, c);
                 }
             }
@@ -110,10 +111,10 @@ public class Game {
     public boolean isAtBottom() {
         return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()
                 && !currPiece.isSecondToBottomEmpty())
-                || (y + currPiece.getHeight() > board.length && currPiece.isBottomEmpty() && !currPiece.isSecondToBottomEmpty()
-                        )
-                || (y + currPiece.getHeight() - 1 > board.length && currPiece.isBottomEmpty() && currPiece.isSecondToBottomEmpty()
-                        );
+                || (y + currPiece.getHeight() > board.length && currPiece.isBottomEmpty()
+                        && !currPiece.isSecondToBottomEmpty())
+                || (y + currPiece.getHeight() - 1 > board.length && currPiece.isBottomEmpty()
+                        && currPiece.isSecondToBottomEmpty());
     }
 
     public boolean canGoDown() {
