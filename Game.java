@@ -8,6 +8,7 @@ public class Game {
     private int score;
     private int x;
     private int y;
+    private boolean isGameOver;
 
     public Game() {
         board = new int[20][10];
@@ -16,15 +17,7 @@ public class Game {
         score = 0;
         x = startX;
         y = startY;
-    }
-
-    public void restart() {
-        board = new int[20][10];
-        currPiece = new GamePiece();
-        nextPiece = new GamePiece();
-        score = 0;
-        x = startX;
-        y = startY;
+        isGameOver = false;
     }
 
     public void pause() {
@@ -92,9 +85,14 @@ public class Game {
     public void addPieceToBoard() {
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
-                if (currPiece.getSection(r, c) != 0 && r + y >= 0 && r + y < board.length && c + x >= 0
-                        && c + x < board[0].length) {
-                    board[y + r][x + c] = currPiece.getSection(r, c);
+                if (currPiece.getSection(r, c) != 0) {
+                    if (r + y < 0) {
+                        isGameOver = true;
+                    }
+                    if (r + y >= 0 && r + y < board.length && c + x >= 0
+                            && c + x < board[0].length) {
+                        board[y + r][x + c] = currPiece.getSection(r, c);
+                    }
                 }
             }
         }
@@ -180,7 +178,15 @@ public class Game {
         return toReturn;
     }
 
+    public int[][] getNextPiece() {
+        return nextPiece.getBlock();
+    } 
+
     public int getScore() {
         return score;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
     }
 }

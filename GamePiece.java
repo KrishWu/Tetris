@@ -1,35 +1,35 @@
 public class GamePiece {
-    public static final int[][] iBlock = {
+    public final int[][] iBlock = {
             { 0, 0, 5, 0 },
             { 0, 0, 5, 0 },
             { 0, 0, 5, 0 },
             { 0, 0, 5, 0 }
     };
-    public static final int[][] jBlock = {
+    public final int[][] jBlock = {
             { 0, 6, 0 },
             { 0, 6, 0 },
             { 6, 6, 0 }
     };
-    public static final int[][] lBlock = {
+    public final int[][] lBlock = {
             { 0, 2, 0 },
             { 0, 2, 0 },
             { 0, 2, 2 }
     };
-    public static final int[][] oBlock = {
+    public final int[][] oBlock = {
             { 3, 3 },
             { 3, 3 }
     };
-    public static final int[][] sBlock = {
+    public final int[][] sBlock = {
             { 0, 0, 0 },
             { 0, 4, 4 },
             { 4, 4, 0 }
     };
-    public static final int[][] tBlock = {
+    public final int[][] tBlock = {
             { 0, 0, 0 },
             { 7, 7, 7 },
             { 0, 7, 0 }
     };
-    public static final int[][] zBlock = {
+    public final int[][] zBlock = {
             { 0, 0, 0 },
             { 1, 1, 0 },
             { 0, 1, 1 }
@@ -46,19 +46,19 @@ public class GamePiece {
 
     public GamePiece(String piece) {
         if (piece.equals("i")) {
-            block = iBlock;
+            block = iBlock.clone();
         } else if (piece.equals("j")) {
-            block = jBlock;
+            block = jBlock.clone();
         } else if (piece.equals("l")) {
-            block = lBlock;
+            block = lBlock.clone();
         } else if (piece.equals("o")) {
-            block = oBlock;
+            block = oBlock.clone();
         } else if (piece.equals("s")) {
-            block = sBlock;
+            block = sBlock.clone();
         } else if (piece.equals("t")) {
-            block = tBlock;
+            block = tBlock.clone();
         } else if (piece.equals("z")) {
-            block = zBlock;
+            block = zBlock.clone();
         }
 
         type = piece;
@@ -71,14 +71,14 @@ public class GamePiece {
         // Check if rotation is possible and copy to new location in temp.
         for (int r = 0; r < temp.length; r++) {
             for (int c = 0; c < temp[r].length; c++) {
-                if (block[block[0].length - c - 1][r] != 0 && r + y >= 0) {
+                if (block[block[0].length - c - 1][r] != 0) {
                     if (r + y >= board.length || c + x >= board[0].length) {
                         return;
                     }
-                    if (r + y < 0 || c + x < 0) {
+                    if (c + x < 0) {
                         return;
                     }
-                    if (board[r + y][c + x] != 0) {
+                    if (r + y >= 0 && board[r + y][c + x] != 0) {
                         return;
                     }
                 }
@@ -99,14 +99,14 @@ public class GamePiece {
         // Check if rotation is possible and copy to new location in temp.
         for (int r = 0; r < temp.length; r++) {
             for (int c = 0; c < temp[r].length; c++) {
-                if (block[block[0].length - c - 1][r] != 0 && r + y >= 0) {
+                if (block[block[0].length - c - 1][r] != 0) {
                     if (r + y >= board.length || c + x >= board[0].length) {
                         return;
                     }
-                    if (r + y < 0 || c + x < 0) {
+                    if (c + x < 0) {
                         return;
                     }
-                    if (board[r + y][c + x] != 0) {
+                    if (r + y >= 0 && board[r + y][c + x] != 0) {
                         return;
                     }
                 }

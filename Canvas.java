@@ -9,7 +9,7 @@ public class Canvas extends JComponent {
     private final int WIDTH;
     private final int HEIGHT;
     private Game game;
-    private boolean gameOver;
+    private boolean isGameOver;
     private int newTickTimer;
 
     public Canvas(int width, int height) {
@@ -17,18 +17,21 @@ public class Canvas extends JComponent {
         this.HEIGHT = height;
 
         game = new Game();
-        gameOver = false;
+        isGameOver = false;
         newTickTimer = 0;
 
         repaint();
 
         class TimerListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-                newTickTimer++;
-                if (newTickTimer >= TICK_SPEED) {
-                    game.nextFrame();
-                    newTickTimer = 0;
-                    // System.out.println("Tick");
+                if (!isGameOver) {
+                    newTickTimer++;
+                    if (newTickTimer >= TICK_SPEED) {
+                        game.nextFrame();
+                        isGameOver = game.isGameOver();
+                        newTickTimer = 0;
+                        // System.out.println("Tick");
+                    }
                 }
                 repaint();
             }
@@ -46,13 +49,8 @@ public class Canvas extends JComponent {
 
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == 'r') {
-                    game.restart();
-                    // for (int r = 0; r < 20; r++) {
-                    // for (int c = 0; c < 10; c++) {
-                    // System.out.print(game.getBoard()[r][c]);
-                    // }
-                    // System.out.println();
-                    // }
+                    game = new Game();
+                    isGameOver = false;
                 }
                 if (e.getKeyChar() == 'd') {
                     game.moveRight();
@@ -100,12 +98,60 @@ public class Canvas extends JComponent {
                 } else if (board[i][j] == 7) {
                     g.setColor(Color.PINK);
                 }
-                g.fillRect(j * 40, i * 40 + 50, 40, 40);
+                g.fillRect(j * 40, i * 40 + 100, 40, 40);
+            }
+        }
+    }
+
+    public void drawNextPiece(int[][] nextPiece, Graphics g) {
+        for (int i = 0; i < nextPiece.length; i++) {
+            for (int j = 0; j < nextPiece[i].length; j++) {
+                if (nextPiece[i][j] == 0) {
+                    g.setColor(new Color(40, 40, 40));
+                } else if (nextPiece[i][j] == 1) {
+                    g.setColor(Color.RED);
+                } else if (nextPiece[i][j] == 2) {
+                    g.setColor(Color.ORANGE);
+                } else if (nextPiece[i][j] == 3) {
+                    g.setColor(Color.YELLOW);
+                } else if (nextPiece[i][j] == 4) {
+                    g.setColor(Color.GREEN);
+                } else if (nextPiece[i][j] == 5) {
+                    g.setColor(new Color(8, 240, 240));
+                } else if (nextPiece[i][j] == 6) {
+                    g.setColor(Color.BLUE);
+                } else if (nextPiece[i][j] == 7) {
+                    g.setColor(Color.PINK);
+                }
+                g.fillRect(j * 40 + 440, i * 40 + 100, 40, 40);
             }
         }
     }
 
     public void paintComponent(Graphics g) {
+        g.setColor(new Color(40, 40, 40));
+        g.fillRect(0, 0, WIDTH, HEIGHT);
         drawBoard(game.getBoard(), g);
+        drawNextPiece(game.getNextPiece(), g);
+
+        g.setColor(Color.GREEN);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("Krish Wu's Tetris!", 90, 70);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("Points:", 415, 370);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString(game.getScore() + "", 490, 430);
+
+        if (isGameOver) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.PLAIN, 50));
+            g.drawString("Game Over", 170, 425);
+            g.setFont(new Font("Arial", Font.PLAIN, 25));
+            g.drawString("Press R to play again.", 180, 475);
+        }
     }
 }
