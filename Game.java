@@ -82,6 +82,14 @@ public class Game {
         nextPiece();
     }
 
+    public int dropRowNum() {
+        int tempY = y;
+        while (!isAtBottom(tempY) && canGoDown(tempY)) {
+            tempY++;
+        }
+        return tempY;
+    }
+
     public void addPieceToBoard() {
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
@@ -140,7 +148,30 @@ public class Game {
                         && currPiece.isSecondToBottomEmpty());
     }
 
+    public boolean isAtBottom(int y) {
+        return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()
+                && !currPiece.isSecondToBottomEmpty())
+                || (y + currPiece.getHeight() > board.length && currPiece.isBottomEmpty()
+                        && !currPiece.isSecondToBottomEmpty())
+                || (y + currPiece.getHeight() - 1 > board.length && currPiece.isBottomEmpty()
+                        && currPiece.isSecondToBottomEmpty());
+    }
+
     public boolean canGoDown() {
+        for (int c = 0; c < currPiece.getWidth(); c++) {
+            // System.out.println(currPiece.getLowestRow(c));
+            if (currPiece.getLowestRow(c) != -1) {
+                if (currPiece.getLowestRow(c) + y + 1 >= 0) {
+                    if (board[currPiece.getLowestRow(c) + y + 1][x + c] != 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean canGoDown(int y) {
         for (int c = 0; c < currPiece.getWidth(); c++) {
             // System.out.println(currPiece.getLowestRow(c));
             if (currPiece.getLowestRow(c) != -1) {
@@ -165,11 +196,15 @@ public class Game {
 
     public int[][] getBoard() {
         int[][] toReturn = new int[board.length][board[0].length];
+        int ghostY = dropRowNum();
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[r].length; c++) {
                 if (r >= y && r < y + currPiece.getHeight() && c >= x && c < x + currPiece.getWidth()
                         && currPiece.getSection(r - y, c - x) != 0) {
                     toReturn[r][c] = currPiece.getSection(r - y, c - x);
+                } else if (r >= ghostY && r < ghostY + currPiece.getHeight() && c >= x && c < x + currPiece.getWidth()
+                        && currPiece.getSection(r - ghostY, c - x) != 0) {
+                    toReturn[r][c] = currPiece.getSection(r - ghostY, c - x)+7;
                 } else {
                     toReturn[r][c] = board[r][c];
                 }
@@ -180,7 +215,7 @@ public class Game {
 
     public int[][] getNextPiece() {
         return nextPiece.getBlock();
-    } 
+    }
 
     public int getScore() {
         return score;

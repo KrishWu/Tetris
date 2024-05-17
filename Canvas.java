@@ -97,6 +97,20 @@ public class Canvas extends JComponent {
                     g.setColor(Color.BLUE);
                 } else if (board[i][j] == 7) {
                     g.setColor(Color.PINK);
+                } else if (board[i][j] == 8) {
+                    g.setColor(new Color(255, 0, 0, 127));
+                } else if (board[i][j] == 9) {
+                    g.setColor(new Color(255, 165, 0, 127));
+                } else if (board[i][j] == 10) {
+                    g.setColor(new Color(255, 255, 0, 127));
+                } else if (board[i][j] == 11) {
+                    g.setColor(new Color(0, 255, 0, 127));
+                } else if (board[i][j] == 12) {
+                    g.setColor(new Color(8, 240, 240, 127));
+                } else if (board[i][j] == 13) {
+                    g.setColor(new Color(0, 0, 255, 127));
+                } else if (board[i][j] == 14) {
+                    g.setColor(new Color(255, 192, 203, 127));
                 }
                 g.fillRect(j * 40, i * 40 + 100, 40, 40);
             }
@@ -122,7 +136,8 @@ public class Canvas extends JComponent {
                     g.setColor(Color.BLUE);
                 } else if (nextPiece[i][j] == 7) {
                     g.setColor(Color.PINK);
-                }
+                } 
+
                 g.fillRect(j * 40 + 440, i * 40 + 100, 40, 40);
             }
         }
