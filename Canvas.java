@@ -45,30 +45,30 @@ public class Canvas extends JComponent {
 
         class KeyboardListener implements KeyListener {
             public void keyPressed(KeyEvent e) {
-                //Right arrow key
+                // Right arrow key
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     game.moveRight();
                 }
-                //Left arrow key
+                // Left arrow key
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     game.moveLeft();
                 }
-                //Down arrow key
+                // Down arrow key
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     currTickSpeed = SOFT_DROP_TICK_SPEED;
                 }
-                //Up arrow key
+                // Up arrow key
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     game.rotateRight();
                 }
             }
 
             public void keyReleased(KeyEvent e) {
-                //Down arrow key
+                // Down arrow key
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     currTickSpeed = TICK_SPEED;
                 }
- 
+
             }
 
             public void keyTyped(KeyEvent e) {
@@ -80,10 +80,10 @@ public class Canvas extends JComponent {
                     isGameOver = false;
                 }
                 if (e.getKeyChar() == 'z') {
-                    game.rotateRight();
+                    game.rotateLeft();
                 }
                 if (e.getKeyChar() == 'x') {
-                    game.rotateLeft();
+                    game.rotateRight();
                 }
                 if (e.getKeyChar() == 'p') {
                     game.pause();
@@ -154,7 +154,7 @@ public class Canvas extends JComponent {
                     g.setColor(Color.BLUE);
                 } else if (nextPiece[i][j] == 7) {
                     g.setColor(Color.PINK);
-                } 
+                }
 
                 g.fillRect(j * 40 + 440, i * 40 + 100, 40, 40);
             }

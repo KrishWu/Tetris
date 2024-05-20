@@ -1,5 +1,5 @@
 public class Game {
-    public static final int startX = 4;
+    public static final int startX = 3;
     public static final int startY = 0;
 
     private int[][] board;
@@ -136,8 +136,16 @@ public class Game {
     }
 
     public void addPoints(int numLinesRemoved) {
-        score += numLinesRemoved * 100;
-    }
+        if (numLinesRemoved == 1) {
+            score += 40;
+        } else if (numLinesRemoved == 2) {
+            score += 100;
+        } else if (numLinesRemoved == 3) {
+            score += 300;
+        } else if (numLinesRemoved >= 4) {
+            score += 1200;
+        }
+     }
 
     public boolean isAtBottom() {
         return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()
