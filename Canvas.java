@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class Canvas extends JComponent {
     public static final int TICK_SPEED = 500;
+    public static final int SOFT_DROP_TICK_SPEED = 50;
     public static final int REFRESH_SPEED = 1;
 
     private final int WIDTH;
@@ -11,6 +12,7 @@ public class Canvas extends JComponent {
     private Game game;
     private boolean isGameOver;
     private int newTickTimer;
+    private int currTickSpeed;
 
     public Canvas(int width, int height) {
         this.WIDTH = width;
@@ -19,6 +21,7 @@ public class Canvas extends JComponent {
         game = new Game();
         isGameOver = false;
         newTickTimer = 0;
+        currTickSpeed = TICK_SPEED;
 
         repaint();
 
@@ -26,7 +29,7 @@ public class Canvas extends JComponent {
             public void actionPerformed(ActionEvent e) {
                 if (!isGameOver) {
                     newTickTimer++;
-                    if (newTickTimer >= TICK_SPEED) {
+                    if (newTickTimer >= currTickSpeed) {
                         game.nextFrame();
                         isGameOver = game.isGameOver();
                         newTickTimer = 0;
@@ -42,29 +45,44 @@ public class Canvas extends JComponent {
 
         class KeyboardListener implements KeyListener {
             public void keyPressed(KeyEvent e) {
+                //Right arrow key
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    game.moveRight();
+                }
+                //Left arrow key
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    game.moveLeft();
+                }
+                //Down arrow key
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    currTickSpeed = SOFT_DROP_TICK_SPEED;
+                }
+                //Up arrow key
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    game.rotateRight();
+                }
             }
 
             public void keyReleased(KeyEvent e) {
+                //Down arrow key
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    currTickSpeed = TICK_SPEED;
+                }
+ 
             }
 
             public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == ' ') {
+                    game.drop();
+                }
                 if (e.getKeyChar() == 'r') {
                     game = new Game();
                     isGameOver = false;
                 }
-                if (e.getKeyChar() == 'd') {
-                    game.moveRight();
-                }
-                if (e.getKeyChar() == 'a') {
-                    game.moveLeft();
-                }
-                if (e.getKeyChar() == 's') {
-                    game.drop();
-                }
-                if (e.getKeyChar() == '.') {
+                if (e.getKeyChar() == 'z') {
                     game.rotateRight();
                 }
-                if (e.getKeyChar() == ',') {
+                if (e.getKeyChar() == 'x') {
                     game.rotateLeft();
                 }
                 if (e.getKeyChar() == 'p') {
