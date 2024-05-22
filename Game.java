@@ -24,6 +24,9 @@ public class Game {
     }
 
     public void pause() {
+        if (isGameOver) {
+            return;
+        }
         isPaused = !isPaused;
     }
 

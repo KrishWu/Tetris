@@ -201,7 +201,7 @@ public class Canvas extends JComponent {
             g.drawString("Press R to play again.", 180, 475);
         }
 
-        if (game.isPaused() && !isGameOver) {
+        if (game.isPaused()) {
             g.setColor(new Color(0, 0, 0, 127));
             g.fillRect(150, 360, 300, 150);
             g.setColor(Color.YELLOW);
