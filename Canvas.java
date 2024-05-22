@@ -29,7 +29,7 @@ public class Canvas extends JComponent {
             public void actionPerformed(ActionEvent e) {
                 if (!isGameOver) {
                     newTickTimer++;
-                    if (newTickTimer >= currTickSpeed) {
+                    if (newTickTimer >= currTickSpeed * game.getSpeedMultiplier()) {
                         game.nextFrame();
                         isGameOver = game.isGameOver();
                         newTickTimer = 0;
@@ -179,12 +179,36 @@ public class Canvas extends JComponent {
         g.setFont(new Font("Arial", Font.BOLD, 50));
         g.drawString(game.getScore() + "", 490, 430);
 
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("← - Move Left", 415, 500);
+        g.drawString("→ - Move Right", 415, 540);
+        g.drawString("↓ - Soft Drop", 415, 580);
+        g.drawString("X / ↑ - Rotate Right", 415, 620);
+        g.drawString("Z - Rotate Left", 415, 660);
+        g.drawString("Space - Hard Drop", 415, 700);
+        g.drawString("R - Restart", 415, 740);
+        g.drawString("P - Pause", 415, 780);
+
+
         if (isGameOver) {
+            g.setColor(new Color(0, 0, 0, 127));
+            g.fillRect(150, 360, 300, 150);
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.PLAIN, 50));
             g.drawString("Game Over", 170, 425);
             g.setFont(new Font("Arial", Font.PLAIN, 25));
             g.drawString("Press R to play again.", 180, 475);
+        }
+
+        if (game.isPaused() && !isGameOver) {
+            g.setColor(new Color(0, 0, 0, 127));
+            g.fillRect(150, 360, 300, 150);
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.PLAIN, 50));
+            g.drawString("Paused", 210, 425);
+            g.setFont(new Font("Arial", Font.PLAIN, 25));
+            g.drawString("Press P to resume.", 190, 475);
         }
     }
 }

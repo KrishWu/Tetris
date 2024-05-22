@@ -6,9 +6,11 @@ public class Game {
     private GamePiece currPiece;
     private GamePiece nextPiece;
     private int score;
+    private int totalLinesRemoved;
     private int x;
     private int y;
     private boolean isGameOver;
+    private boolean isPaused;
 
     public Game() {
         board = new int[20][10];
@@ -18,13 +20,17 @@ public class Game {
         x = startX;
         y = startY;
         isGameOver = false;
+        isPaused = false;
     }
 
     public void pause() {
-
+        isPaused = !isPaused;
     }
 
     public void nextFrame() {
+        if (isPaused) {
+            return;
+        }
         // System.out.println(currPiece.isBottomEmpty());
         if (isAtBottom()) {
             nextPiece();
@@ -36,14 +42,23 @@ public class Game {
     }
 
     public void rotateRight() {
+        if (isPaused) {
+            return;
+        }
         currPiece.rotateRight(board, x, y);
     }
 
     public void rotateLeft() {
+        if (isPaused) {
+            return;
+        }
         currPiece.rotateLeft(board, x, y);
     }
 
     public void moveRight() {
+        if (isPaused) {
+            return;
+        }
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
                 if (currPiece.getSection(r, c) != 0) {
@@ -60,6 +75,9 @@ public class Game {
     }
 
     public void moveLeft() {
+        if (isPaused) {
+            return;
+        }
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
                 if (currPiece.getSection(r, c) != 0) {
@@ -76,6 +94,9 @@ public class Game {
     }
 
     public void drop() {
+        if (isPaused) {
+            return;
+        }
         while (!isAtBottom() && canGoDown()) {
             y++;
         }
@@ -145,6 +166,7 @@ public class Game {
         } else if (numLinesRemoved >= 4) {
             score += 1200;
         }
+        totalLinesRemoved += numLinesRemoved;
      }
 
     public boolean isAtBottom() {
@@ -229,7 +251,15 @@ public class Game {
         return score;
     }
 
+    public double getSpeedMultiplier() {
+        return (1/(1+0.05*totalLinesRemoved));
+    }
+
     public boolean isGameOver() {
         return isGameOver;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 }
