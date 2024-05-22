@@ -28,7 +28,7 @@ public class Game {
     }
 
     public void nextFrame() {
-        if (isPaused) {
+        if (isGameOver || isPaused) {
             return;
         }
         // System.out.println(currPiece.isBottomEmpty());
@@ -42,21 +42,21 @@ public class Game {
     }
 
     public void rotateRight() {
-        if (isPaused) {
+        if (isGameOver || isPaused) {
             return;
         }
         currPiece.rotateRight(board, x, y);
     }
 
     public void rotateLeft() {
-        if (isPaused) {
+        if (isGameOver || isPaused) {
             return;
         }
         currPiece.rotateLeft(board, x, y);
     }
 
     public void moveRight() {
-        if (isPaused) {
+        if (isGameOver || isPaused) {
             return;
         }
         for (int r = 0; r < currPiece.getHeight(); r++) {
@@ -75,7 +75,7 @@ public class Game {
     }
 
     public void moveLeft() {
-        if (isPaused) {
+        if (isGameOver || isPaused) {
             return;
         }
         for (int r = 0; r < currPiece.getHeight(); r++) {
@@ -94,7 +94,7 @@ public class Game {
     }
 
     public void drop() {
-        if (isPaused) {
+        if (isGameOver || isPaused) {
             return;
         }
         while (!isAtBottom() && canGoDown()) {
