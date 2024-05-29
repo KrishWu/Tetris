@@ -37,12 +37,12 @@ public class Canvas extends JComponent {
         newTickTimer = 0;
         currTickSpeed = TICK_SPEED;
 
-       tetrisSound = new Sound("tetris.wav");
+       tetrisSound = new Sound("/sound/tetris.wav");
        tetrisSound.loop();
-       clearLineSound = new Sound("clearLine.wav");
-       dropSound = new Sound("drop.wav");
-    //    rightSound = new Sound("right.wav");
-    //    leftSound = new Sound("left.wav");
+       clearLineSound = new Sound("/sound/clearLine.wav");
+       dropSound = new Sound("/sound/drop.wav");
+    //    rightSound = new Sound("/sound/right.wav");
+    //    leftSound = new Sound("/sound/left.wav");
 
         // (new Thread(new MediaPlayer("tetris.wav")).start();
 
