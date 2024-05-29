@@ -1,4 +1,5 @@
 public class GamePiece {
+    //The various blocks for the pieces, with numbers representing their corresponding colors.
     public final int[][] iBlock = {
             { 0, 0, 5, 0 },
             { 0, 0, 5, 0 },
@@ -34,16 +35,18 @@ public class GamePiece {
             { 1, 1, 0 },
             { 0, 1, 1 }
     };
-    public static final String blocks = "ijlostz";
+    public static final String blocks = "ijlostz"; //Possible strings for the blocks.
 
-    private int[][] block;
-    private String type;
+    private int[][] block; //Block array.
+    private String type; //The type of block that it is as a string.
 
+    //Constructor to make a new GamePiece with a random block.
     public GamePiece() {
         // System.out.println(blocks.substring((int)(Math.random()*7)).substring(0,1));
         this(blocks.substring((int) (Math.random() * 7)).substring(0, 1));
     }
-
+    
+    //Constructor to make a new game piece given a block.
     public GamePiece(String piece) {
         if (piece.equals("i")) {
             block = iBlock.clone();
@@ -121,6 +124,7 @@ public class GamePiece {
         }
     }
 
+    //Check if the bottom row of the block's matrix is empty or not.
     public boolean isBottomEmpty() {
         for (int section : block[block.length - 1]) {
             if (section != 0) {
@@ -130,6 +134,7 @@ public class GamePiece {
         return true;
     }
 
+    //Check if the second to the bottom row of the block is empty or not for the long line piece.
     public boolean isSecondToBottomEmpty() {
         for (int section : block[block.length - 2]) {
             if (section != 0) {
@@ -139,6 +144,7 @@ public class GamePiece {
         return true;
     }
 
+    //Get the number of the row that contains the lowest row of the block given the column.
     public int getLowestRow(int c) {
         for (int r = block.length - 1; r >= 0; r--) {
             if (block[r][c] != 0) {
@@ -148,22 +154,27 @@ public class GamePiece {
         return -1;
     }
 
+    //Get the height of the block.
     public int getHeight() {
         return block.length;
     }
 
+    //Get the width of the block.
     public int getWidth() {
         return block[0].length;
     }
 
+    //Get the specific section of the block given the row and column.
     public int getSection(int r, int c) {
         return block[r][c];
     }
 
+    //Get the type of the block.
     public String getType() {
         return type;
     }
 
+    //Get the entire 2D matrix of the block.
     public int[][] getBlock() {
         return block;
     }

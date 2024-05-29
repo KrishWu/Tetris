@@ -12,6 +12,7 @@ public class Game {
     private boolean isGameOver;
     private boolean isPaused;
 
+    //Constructor for the game object.
     public Game() {
         board = new int[20][10];
         currPiece = new GamePiece();
@@ -23,6 +24,7 @@ public class Game {
         isPaused = false;
     }
 
+    //A method to pause the game and make things not happen.
     public void pause() {
         if (isGameOver) {
             return;
@@ -30,6 +32,7 @@ public class Game {
         isPaused = !isPaused;
     }
 
+    //Call the next frame to move the piece down one.
     public void nextFrame() {
         if (isGameOver || isPaused) {
             return;
@@ -44,6 +47,7 @@ public class Game {
         }
     }
 
+    //Rotate the piece right.
     public void rotateRight() {
         if (isGameOver || isPaused) {
             return;
@@ -51,6 +55,7 @@ public class Game {
         currPiece.rotateRight(board, x, y);
     }
 
+    //Rotate the piece left.
     public void rotateLeft() {
         if (isGameOver || isPaused) {
             return;
@@ -58,6 +63,7 @@ public class Game {
         currPiece.rotateLeft(board, x, y);
     }
 
+    //Move the piece right one.
     public void moveRight() {
         if (isGameOver || isPaused) {
             return;
@@ -77,6 +83,7 @@ public class Game {
         x++;
     }
 
+    //Move the piece one left.
     public void moveLeft() {
         if (isGameOver || isPaused) {
             return;
@@ -96,6 +103,7 @@ public class Game {
         x--;
     }
 
+    //Have the piece drop to the bottom with a hard drop.
     public void drop() {
         if (isGameOver || isPaused) {
             return;
@@ -106,6 +114,7 @@ public class Game {
         nextPiece();
     }
 
+    //Give the row number it would go to if it was dropped for the ghost.
     public int dropRowNum() {
         int tempY = y;
         while (!isAtBottom(tempY) && canGoDown(tempY)) {
@@ -114,6 +123,7 @@ public class Game {
         return tempY;
     }
 
+    //Add the current piece to the board after it has hit the bottom.
     public void addPieceToBoard() {
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
@@ -130,6 +140,7 @@ public class Game {
         }
     }
 
+    //After piece hits the bottom make it draw to the board and set the next piece to the current piece with a new height and make a new piece for the next piece.
     public void nextPiece() {
         addPieceToBoard();
         removeFullLines();
@@ -139,6 +150,7 @@ public class Game {
         y = -currPiece.getHeight();
     }
 
+    //If a line is completely filled remove it and call the addPoints() to give more points for the piece that was removed.
     public void removeFullLines() {
         int numLinesRemoved = 0;
         for (int r = 0; r < board.length; r++) {
@@ -150,6 +162,7 @@ public class Game {
         addPoints(numLinesRemoved);
     }
 
+    //Remove a line from the board with the given row number and drop the rows above it one down the make sure that there is no gaps.
     public void removeLine(int r) {
         for (int currR = r; currR >= 1; currR--) {
             for (int c = 0; c < board[currR].length; c++) {
@@ -159,6 +172,7 @@ public class Game {
         board[0] = new int[board[0].length];
     }
 
+    //Add points to the score for the given number of lines removed at once.
     public void addPoints(int numLinesRemoved) {
         if (numLinesRemoved == 1) {
             score += 40;
@@ -172,6 +186,7 @@ public class Game {
         totalLinesRemoved += numLinesRemoved;
      }
 
+    //Check if the piece is at the bottom.
     public boolean isAtBottom() {
         return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()
                 && !currPiece.isSecondToBottomEmpty())
@@ -181,6 +196,7 @@ public class Game {
                         && currPiece.isSecondToBottomEmpty());
     }
 
+    //Check if given a current y if it is at the bottom.
     public boolean isAtBottom(int y) {
         return (y + currPiece.getHeight() >= board.length && !currPiece.isBottomEmpty()
                 && !currPiece.isSecondToBottomEmpty())
@@ -190,6 +206,7 @@ public class Game {
                         && currPiece.isSecondToBottomEmpty());
     }
 
+    //Check if the piece has the ability to go down another one or if it can not and return a boolean.
     public boolean canGoDown() {
         for (int c = 0; c < currPiece.getWidth(); c++) {
             // System.out.println(currPiece.getLowestRow(c));
@@ -204,6 +221,7 @@ public class Game {
         return true;
     }
 
+    //Check if a piece can go down another row given the y of the piece that it be at for the piece's ghost.
     public boolean canGoDown(int y) {
         for (int c = 0; c < currPiece.getWidth(); c++) {
             // System.out.println(currPiece.getLowestRow(c));
@@ -218,6 +236,7 @@ public class Game {
         return true;
     }
 
+    //Check if the given line is full or it is not.
     public boolean isLineFull(int r) {
         for (int c : board[r]) {
             if (c == 0) {
@@ -227,6 +246,7 @@ public class Game {
         return true;
     }
 
+    //The get board method to return a 2D array that is the board, plus the drawn on piece, and the drawn on ghost.
     public int[][] getBoard() {
         int[][] toReturn = new int[board.length][board[0].length];
         int ghostY = dropRowNum();
@@ -246,22 +266,27 @@ public class Game {
         return toReturn;
     }
 
+    //Get the 
     public int[][] getNextPiece() {
         return nextPiece.getBlock();
     }
 
+    //Get the score.
     public int getScore() {
         return score;
     }
 
+    //Get the speed multiplier so it goes faster as more lines are removed.
     public double getSpeedMultiplier() {
         return (1/(1+0.05*totalLinesRemoved));
     }
-
+    
+    //Get if isGameOver.
     public boolean isGameOver() {
         return isGameOver;
     }
 
+    //Get if isPaused.
     public boolean isPaused() {
         return isPaused;
     }
