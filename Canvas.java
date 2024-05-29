@@ -1,11 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -24,9 +20,11 @@ public class Canvas extends JComponent {
     private int newTickTimer;
     private int currTickSpeed;
 
-    private File file;
-    private AudioInputStream audioInputStream;
-    private Clip clip;
+    private Sound tetrisSound;
+    private Sound clearLineSound;
+    private Sound dropSound;
+    // private Sound rightSound;
+    // private Sound leftSound;
 
     //Constructor for the canvas given the width and height.
     public Canvas(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -39,12 +37,14 @@ public class Canvas extends JComponent {
         newTickTimer = 0;
         currTickSpeed = TICK_SPEED;
 
-        //Makes the audio run and work properly so yeah.
-        file = new File("tetris.wav"); //New file.
-        audioInputStream = AudioSystem.getAudioInputStream(file.getAbsoluteFile()); //Pass it into the audio stream.
-        clip = AudioSystem.getClip(); //Get the clip and set it to the clip.
-        clip.open(audioInputStream); //Open the sound file and be able to play it with it prepared.
-        clip.loop(Clip.LOOP_CONTINUOUSLY); //Loop the music continuously so it keeps playing and you love it.
+       tetrisSound = new Sound("tetris.wav");
+       tetrisSound.loop();
+       clearLineSound = new Sound("clearLine.wav");
+       dropSound = new Sound("drop.wav");
+    //    rightSound = new Sound("right.wav");
+    //    leftSound = new Sound("left.wav");
+
+        // (new Thread(new MediaPlayer("tetris.wav")).start();
 
         //Update the screen.
         repaint();
@@ -61,6 +61,9 @@ public class Canvas extends JComponent {
                         // System.out.println("Tick");
                     }
                 }
+                if (game.getIsLineRemovedSound()) {
+                    clearLineSound.play();
+                }
                 repaint();
             }
         }
@@ -74,11 +77,15 @@ public class Canvas extends JComponent {
             public void keyPressed(KeyEvent e) {
                 // Right arrow key
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    game.moveRight();
+                    if (game.moveRight()) {
+                        // rightSound.play(); //Disabled because it was to much.
+                    }
                 }
                 // Left arrow key
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    game.moveLeft();
+                    if (game.moveLeft()) {
+                        // leftSound.play(); //Disabled because it was too much.
+                    }
                 }
                 // Down arrow key
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -100,7 +107,9 @@ public class Canvas extends JComponent {
 
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == ' ') {
-                    game.drop();
+                    if (game.drop()) {
+                        dropSound.play();
+                    };
                 }
                 if (e.getKeyChar() == 'r') {
                     game = new Game();

@@ -12,6 +12,8 @@ public class Game {
     private boolean isGameOver;
     private boolean isPaused;
 
+    private boolean isLineRemovedSound;
+
     //Constructor for the game object.
     public Game() {
         board = new int[20][10];
@@ -22,6 +24,7 @@ public class Game {
         y = startY;
         isGameOver = false;
         isPaused = false;
+        isLineRemovedSound = false;
     }
 
     //A method to pause the game and make things not happen.
@@ -64,54 +67,57 @@ public class Game {
     }
 
     //Move the piece right one.
-    public void moveRight() {
+    public boolean moveRight() {
         if (isGameOver || isPaused) {
-            return;
+            return false;
         }
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
                 if (currPiece.getSection(r, c) != 0) {
                     if (x + c + 1 >= board[0].length) {
-                        return;
+                        return false;
                     }
                     if (y + r >= 0 && board[y + r][x + c + 1] != 0) {
-                        return;
+                        return false;
                     }
                 }
             }
         }
         x++;
+        return true;
     }
 
     //Move the piece one left.
-    public void moveLeft() {
+    public boolean moveLeft() {
         if (isGameOver || isPaused) {
-            return;
+            return false;
         }
         for (int r = 0; r < currPiece.getHeight(); r++) {
             for (int c = 0; c < currPiece.getWidth(); c++) {
                 if (currPiece.getSection(r, c) != 0) {
                     if (x + c - 1 < 0) {
-                        return;
+                        return false;
                     }
                     if (y + r >= 0 && board[y + r][x + c - 1] != 0) {
-                        return;
+                        return false;
                     }
                 }
             }
         }
         x--;
+        return true;
     }
 
     //Have the piece drop to the bottom with a hard drop.
-    public void drop() {
+    public boolean drop() {
         if (isGameOver || isPaused) {
-            return;
+            return false;
         }
         while (!isAtBottom() && canGoDown()) {
             y++;
         }
         nextPiece();
+        return true;
     }
 
     //Give the row number it would go to if it was dropped for the ghost.
@@ -182,6 +188,9 @@ public class Game {
             score += 300;
         } else if (numLinesRemoved >= 4) {
             score += 1200;
+        }
+        if (numLinesRemoved > 0) {
+            isLineRemovedSound = true;
         }
         totalLinesRemoved += numLinesRemoved;
      }
@@ -266,7 +275,7 @@ public class Game {
         return toReturn;
     }
 
-    //Get the 
+    //Get the next piece block to display in the next piece area on the top right of the screen.
     public int[][] getNextPiece() {
         return nextPiece.getBlock();
     }
@@ -289,5 +298,15 @@ public class Game {
     //Get if isPaused.
     public boolean isPaused() {
         return isPaused;
+    }
+
+    //Get if it should play the line removed sound.
+    public boolean getIsLineRemovedSound() {
+        if (isLineRemovedSound) {
+            isLineRemovedSound = false;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
