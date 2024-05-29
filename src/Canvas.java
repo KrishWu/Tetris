@@ -1,3 +1,4 @@
+package src;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -37,12 +38,12 @@ public class Canvas extends JComponent {
         newTickTimer = 0;
         currTickSpeed = TICK_SPEED;
 
-       tetrisSound = new Sound("/sound/tetris.wav");
+       tetrisSound = new Sound("./src/sound/tetris.wav");
        tetrisSound.loop();
-       clearLineSound = new Sound("/sound/clearLine.wav");
-       dropSound = new Sound("/sound/drop.wav");
-    //    rightSound = new Sound("/sound/right.wav");
-    //    leftSound = new Sound("/sound/left.wav");
+       clearLineSound = new Sound("./src/sound/clearLine.wav");
+       dropSound = new Sound("./src/sound/drop.wav");
+    //    rightSound = new Sound("./src/sound/right.wav");
+    //    leftSound = new Sound("./src/sound/left.wav");
 
         // (new Thread(new MediaPlayer("tetris.wav")).start();
 

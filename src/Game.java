@@ -1,3 +1,4 @@
+package src;
 public class Game {
     public static final int startX = 3;
     public static final int startY = 0;

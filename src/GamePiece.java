@@ -1,3 +1,4 @@
+package src;
 public class GamePiece {
     //The various blocks for the pieces, with numbers representing their corresponding colors.
     public final int[][] iBlock = {
