@@ -3,6 +3,13 @@
 A complete Tetris game written from scratch in Java with Swing. No game engine, no external
 libraries, no build tool. Computer Science A final project.
 
+**Every part of this game is my own work.** The board and piece representation, the rotation
+algorithm, collision detection, line clearing, scoring, the ghost piece, the rendering, the keyboard
+handling, and the sound playback were all written by me, using nothing beyond the standard Java
+library. The commit history shows it going up feature by feature over May and June of 2024. The only
+AI assistance anywhere in this repository is this README and a minor one-line fix to the
+counter-clockwise rotation check it found while making the README.
+
 <p align="center">
   <img src="docs/screenshot.png" alt="Krish Wu's Tetris" width="360">
 </p>
@@ -30,7 +37,7 @@ libraries, no build tool. Computer Science A final project.
 | <kbd>R</kbd> | Restart |
 
 > The letter keys are lowercase-only, so Caps Lock will stop <kbd>R</kbd>, <kbd>Z</kbd>,
-> <kbd>X</kbd> and <kbd>P</kbd> from responding.
+> <kbd>X</kbd>, and <kbd>P</kbd> from responding.
 
 ## Requirements
 
@@ -111,6 +118,12 @@ rotation would put the piece off the board or into a settled block, it simply do
 
 The drop interval is scaled by `1 / (1 + 0.05 x total lines cleared)`, so the game is twice as fast
 after 20 lines and keeps accelerating from there.
+
+## Audio
+
+The background music is the Tetris theme (Korobeiniki, a Russian folk tune), which I did not write.
+I sequenced it from a MIDI file and rendered it using my own instrument samples. The sound effects
+are my own too, and so is the code that loads and plays everything (`Sound.java`).
 
 ## Known issues
 
