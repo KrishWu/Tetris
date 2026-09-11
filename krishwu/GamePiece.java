@@ -103,7 +103,7 @@ public class GamePiece {
         // Check if rotation is possible and copy to new location in temp.
         for (int r = 0; r < temp.length; r++) {
             for (int c = 0; c < temp[r].length; c++) {
-                if (block[block[0].length - c - 1][r] != 0) {
+                if (block[c][block.length - r - 1] != 0) {
                     if (r + y >= board.length || c + x >= board[0].length) {
                         return;
                     }
