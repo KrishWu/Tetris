@@ -3,7 +3,9 @@
 A complete Tetris game written from scratch in Java with Swing. No game engine, no external
 libraries, no build tool. Computer Science A final project.
 
-![Krish Wu's Tetris](docs/screenshot.png)
+<p align="center">
+  <img src="docs/screenshot.png" alt="Krish Wu's Tetris" width="360">
+</p>
 
 ## Features
 
